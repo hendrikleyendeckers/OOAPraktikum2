@@ -112,6 +112,14 @@ void PriorityQueue::insert(T value, float priority) {
             }
         }
     }
+
+    // TODO: new search algorithm
+//    if (this->priorityQueueEntry[this->_last]->priority < priority) {
+        // Array immer in der mitte teilen
+        // -> gucken ob linke oder recht hälfte größer
+        //    => solange bis bis array größe = 2
+//    }
+
     this->_last += 1;
 }
 
