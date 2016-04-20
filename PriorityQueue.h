@@ -66,8 +66,11 @@ void PriorityQueue::insert(T value, float priority) {
     //verdoppeln wenn Speicher voll ist
     if (this->_last == (this->_size - 1)) {
         this->_size *= 2;
+
         //doppelten speicher anlegen
         PriorityQueueEntry_t **tmp;
+        //doppelt so großes pointerArray allokieren
+        tmp = new PriorityQueueEntry_t*[this->_size];
 
         //speicher reservieren für alle strukturen ab dem letzten
         // TODO: Kann weg?
@@ -80,9 +83,11 @@ void PriorityQueue::insert(T value, float priority) {
             tmp[i] = this->priorityQueueEntry[i];
         }
 
-        delete (this->priorityQueueEntry); //altes array löschen
+        //altes array löschen
+        delete (this->priorityQueueEntry);
 
-        this->priorityQueueEntry = tmp; //auf neues array zeigen lassen
+        //auf neues array zeigen lassen
+        this->priorityQueueEntry = tmp;
     }
 
     //sortieren und einfügen
