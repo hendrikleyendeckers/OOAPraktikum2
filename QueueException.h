@@ -12,13 +12,4 @@ public:
     string toString();
 };
 
-QueueException::QueueException(string error) {
-    this->error = error;
-}
-
-string QueueException::toString() {
-    return this->error;
-}
-
-
 #endif //OOAPRAKTIKUM2_QUEUEEXCEPTION_H

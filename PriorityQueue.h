@@ -49,7 +49,7 @@ PriorityQueue<T>::~PriorityQueue<T>() {
 }
 
 template<typename T>
-void PriorityQueue::insert(T value, float priority) {
+void PriorityQueue<T>::insert(T value, float priority) {
     // TODO: Kann weg, wenn _last = -1, _size = 0
     if (this->isEmpty()) {
         this->priorityQueueEntry = new PriorityQueueEntry_t *[2];
@@ -93,7 +93,7 @@ void PriorityQueue::insert(T value, float priority) {
     //sortieren und einfügen
     //falls letzter index.p kleiner als funktionsparameter p
     if (this->priorityQueueEntry[this->_last]->priority >= priority) {
-        this->priorityQueueEntry[this->_last + 1] = new PriorityQueueEntry_t;
+//        this->priorityQueueEntry[this->_last + 1] = new PriorityQueueEntry_t;
         this->priorityQueueEntry[this->_last + 1]->priority = priority;
         this->priorityQueueEntry[this->_last + 1]->value = value;
     }
@@ -101,7 +101,8 @@ void PriorityQueue::insert(T value, float priority) {
     if (this->priorityQueueEntry[this->_last]->priority < priority) {
         //läuft bis index 0 solange index.p > p
         for (int i = this->_last; i >= 0 && this->priorityQueueEntry[i]->priority < priority; i--) {
-            this->priorityQueueEntry[i + 1] = this->priorityQueueEntry[i];
+            this->priorityQueueEntry[i + 1]->priority = this->priorityQueueEntry[i]->priority;
+            this->priorityQueueEntry[i + 1]->value = this->priorityQueueEntry[i]->value;
 
             //falls nächstes element i-1 kleiner/gleich p ist, dann aktuelles element überschreiben
             if (i == 0 || this->priorityQueueEntry[i - 1]->priority >= priority) {
@@ -124,7 +125,7 @@ void PriorityQueue::insert(T value, float priority) {
 }
 
 template<typename T>
-T PriorityQueue::extractMin(void) {
+T PriorityQueue<T>::extractMin(void) {
     if (this->isEmpty()) {
         throw QueueException("No Elements found");
     }
@@ -138,17 +139,18 @@ T PriorityQueue::extractMin(void) {
 }
 
 template<typename T>
-void PriorityQueue::decreaseKey(T value, float priority) {
+void PriorityQueue<T>::decreaseKey(T value, float priority) {
     this->remove(value);
     this->insert(value, priority);
 }
 
 template<typename T>
-void PriorityQueue::remove(T value) {
+void PriorityQueue<T>::remove(T value) {
     for (int i = 0; i < this->_last; i++) {
         if (this->priorityQueueEntry[i]->value == value) {
             for (int j = i; j <= this->_last; j++) {
-                this->priorityQueueEntry[j] = this->priorityQueueEntry[j + 1];
+                this->priorityQueueEntry[j]->priority = this->priorityQueueEntry[j + 1]->priority;
+                this->priorityQueueEntry[j]->value = this->priorityQueueEntry[j + 1]->value;
             }
 
             this->_last -= 1;
@@ -182,7 +184,7 @@ void PriorityQueue::remove(T value) {
 }
 
 template<typename T>
-bool PriorityQueue::isEmpty() {
+bool PriorityQueue<T>::isEmpty() {
     return this->_size == 0;
 }
 

@@ -3,3 +3,12 @@
 //
 
 #include "PriorityQueue.h"
+
+
+QueueException::QueueException(string error) {
+    this->error = error;
+}
+
+string QueueException::toString() {
+    return this->error;
+}
