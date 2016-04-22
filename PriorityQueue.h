@@ -13,7 +13,7 @@ protected:
         T value;
         float priority;
     };
-    PriorityQueueEntry_t **priorityQueueEntry;
+    PriorityQueueEntry_t *priorityQueueEntry;
     int _size;
     int _last;
 
@@ -48,10 +48,9 @@ template<typename T>
 void PriorityQueue<T>::insert(T value, float priority) {
     // TODO: Kann weg, wenn _last = 0, _size = 1
     if (this->isEmpty()) {
-        this->priorityQueueEntry = new PriorityQueueEntry_t *[2];
-        this->priorityQueueEntry[0] = new PriorityQueueEntry_t;
-        this->priorityQueueEntry[0]->priority = priority;
-        this->priorityQueueEntry[0]->value = value;
+        this->priorityQueueEntry = new PriorityQueueEntry_t[2];
+        this->priorityQueueEntry[0].priority = priority;
+        this->priorityQueueEntry[0].value = value;
 
         this->_size = 2;
         this->_last = 0;
@@ -63,9 +62,9 @@ void PriorityQueue<T>::insert(T value, float priority) {
         this->_size *= 2;
 
         //doppelten speicher anlegen
-        PriorityQueueEntry_t **tmp;
+        PriorityQueueEntry_t *tmp;
         //doppelt so großes pointerArray allokieren
-        tmp = new PriorityQueueEntry_t*[this->_size];
+        tmp = new PriorityQueueEntry_t[this->_size];
 
         //vorhandene elemente übertragen auf neues array
         for (int i = 0; i <= this->_last; i++) {
@@ -82,24 +81,21 @@ void PriorityQueue<T>::insert(T value, float priority) {
 
     //sortieren und einfügen
     //falls letzter index.p kleiner als funktionsparameter p
-    if (this->priorityQueueEntry[this->_last]->priority >= priority) {
-        this->priorityQueueEntry[this->_last + 1] = new PriorityQueueEntry_t;
-        this->priorityQueueEntry[this->_last + 1]->priority = priority;
-        this->priorityQueueEntry[this->_last + 1]->value = value;
+    if (this->priorityQueueEntry[this->_last].priority >= priority) {
+        this->priorityQueueEntry[this->_last + 1].priority = priority;
+        this->priorityQueueEntry[this->_last + 1].value = value;
     }
 
-    if (this->priorityQueueEntry[this->_last]->priority < priority) {
+    if (this->priorityQueueEntry[this->_last].priority < priority) {
         //läuft bis index 0 solange index.p > p
-        for (int i = this->_last; i >= 0 && this->priorityQueueEntry[i]->priority < priority; i--) {
-            this->priorityQueueEntry[i + 1] = new PriorityQueueEntry_t;
-            this->priorityQueueEntry[i + 1]->priority = this->priorityQueueEntry[i]->priority;
-            this->priorityQueueEntry[i + 1]->value = this->priorityQueueEntry[i]->value;
+        for (int i = this->_last; i >= 0 && this->priorityQueueEntry[i].priority < priority; i--) {
+            this->priorityQueueEntry[i + 1].priority = this->priorityQueueEntry[i].priority;
+            this->priorityQueueEntry[i + 1].value = this->priorityQueueEntry[i].value;
 
             //falls nächstes element i-1 kleiner/gleich p ist, dann aktuelles element überschreiben
-            if (i == 0 || this->priorityQueueEntry[i - 1]->priority >= priority) {
-                this->priorityQueueEntry[i] = new PriorityQueueEntry_t;
-                this->priorityQueueEntry[i]->priority = priority;
-                this->priorityQueueEntry[i]->value = value;
+            if (i == 0 || this->priorityQueueEntry[i - 1].priority >= priority) {
+                this->priorityQueueEntry[i].priority = priority;
+                this->priorityQueueEntry[i].value = value;
             }
         }
     }
@@ -120,7 +116,7 @@ T PriorityQueue<T>::extractMin(void) {
         throw QueueException("No Elements found");
     }
 
-    T tmp = this->priorityQueueEntry[this->_last]->value;
+    T tmp = this->priorityQueueEntry[this->_last].value;
     delete this->priorityQueueEntry[this->_last];
 
     this->_last -= 1;
@@ -132,7 +128,7 @@ template<typename T>
 void PriorityQueue<T>::decreaseKey(T value, float priority) {
     bool found = false;
     for (int i = 0; i < this->_last; i++) {
-        if (this->priorityQueueEntry[i]->value == value) {
+        if (this->priorityQueueEntry[i].value == value) {
             found = true;
             break;
         }
@@ -192,8 +188,8 @@ void PriorityQueue<T>::printEntries() {
     } else {
         for (int i = 0; i <= this->_last; i++) {
             cout << "Element " << i << ", ";
-            cout << "Value " << this->priorityQueueEntry[i]->value << ", ";
-            cout << "Priority " << this->priorityQueueEntry[i]->priority << endl;
+            cout << "Value " << this->priorityQueueEntry[i].value << ", ";
+            cout << "Priority " << this->priorityQueueEntry[i].priority << endl;
         }
     }
     cout << endl;
