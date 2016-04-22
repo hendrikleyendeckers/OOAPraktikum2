@@ -5,8 +5,8 @@
 
 using namespace std;
 
-#define MAX 22500
-//#define MAX 10000
+//#define MAX 22500
+#define MAX 100000
 
 int testKai() {
     PriorityQueue<int> *queue;
@@ -197,8 +197,8 @@ void testTime() {
 
 int main() {
 //    testKai();
-    test();
-//    testTime();
+//    test();
+    testTime();
 
     return 0;
 }

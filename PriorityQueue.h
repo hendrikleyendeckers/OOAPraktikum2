@@ -38,9 +38,9 @@ PriorityQueue<T>::PriorityQueue() {
 
 template<typename T>
 PriorityQueue<T>::~PriorityQueue<T>() {
-    for (int i = 0; i < this->_size; i++) {
-        delete priorityQueueEntry[i];
-    }
+//    for (int i = 0; i < this->_size; i++) {
+//        delete priorityQueueEntry[i];
+//    }
     delete[] priorityQueueEntry;
 }
 
