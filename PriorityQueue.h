@@ -115,13 +115,9 @@ T PriorityQueue<T>::extractMin(void) {
     if (this->isEmpty()) {
         throw QueueException("No Elements found");
     }
-
-    T tmp = this->priorityQueueEntry[this->_last].value;
-    delete this->priorityQueueEntry[this->_last];
-
     this->_last -= 1;
 
-    return tmp;
+    return this->priorityQueueEntry[this->_last].value;
 }
 
 template<typename T>
@@ -145,10 +141,10 @@ void PriorityQueue<T>::decreaseKey(T value, float priority) {
 template<typename T>
 void PriorityQueue<T>::remove(T value) {
     for (int i = 0; i < this->_last; i++) {
-        if (this->priorityQueueEntry[i]->value == value) {
+        if (this->priorityQueueEntry[i].value == value) {
             for (int j = i; j <= this->_last; j++) {
-                this->priorityQueueEntry[j]->priority = this->priorityQueueEntry[j + 1]->priority;
-                this->priorityQueueEntry[j]->value = this->priorityQueueEntry[j + 1]->value;
+                this->priorityQueueEntry[j].priority = this->priorityQueueEntry[j + 1].priority;
+                this->priorityQueueEntry[j].value = this->priorityQueueEntry[j + 1].value;
             }
 
             this->_last -= 1;
@@ -159,9 +155,9 @@ void PriorityQueue<T>::remove(T value) {
     if ((this->_last + 1) < (this->_size / 4)) {
         this->_size /= 2;
 
-        PriorityQueueEntry_t **tmp;
+        PriorityQueueEntry_t *tmp;
         // halb so großes pointerArray allokieren
-        tmp = new PriorityQueueEntry_t *[this->_size];
+        tmp = new PriorityQueueEntry_t[this->_size];
 
         // vorhandene elemente übertragen auf neues array
         for (int i = 0; i <= this->_last; i++) {

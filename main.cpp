@@ -197,8 +197,8 @@ void testTime() {
 
 int main() {
 //    testKai();
-//    test();
-    testTime();
+    test();
+//    testTime();
 
     return 0;
 }
